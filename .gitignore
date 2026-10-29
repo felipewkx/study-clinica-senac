@@ -1,0 +1,16 @@
+# Pastas de compilação e artefatos de build
+target/
+bin/
+*.class
+*.jar
+!clinica_pi_uc6/java/uc6-jdbc-base/lib/*.jar
+
+# Configurações de IDEs
+.vscode/
+.idea/
+*.iml
+
+# Logs e arquivos temporários do sistema
+*.log
+.DS_Store
+Thumbs.db
