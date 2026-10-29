@@ -1,50 +1,82 @@
-# Sistema de Gestão Hospitalar - Módulo de Relatórios Clínicos
+# 🏥 Sistema de Gestão Hospitalar — Módulo de Relatórios (UC6)
 
-Este módulo foi desenvolvido para transformar dados operacionais da clínica em relatórios analíticos de apoio à gestão hospitalar. A solução consolida consultas estruturadas em banco de dados e uma interface interativa no terminal em Java para fornecer indicadores claros que auxiliam no planejamento de agendas, contratações, faturamento e otimização de salas.
-
-## 📊 Relatórios Disponíveis
-
-| Relatório                    | Indicadores e Perguntas de Negócio                                                        |
-| :--------------------------- | :---------------------------------------------------------------------------------------- |
-| **1. Demanda Operacional**   | Identificação de especialidades e profissionais com maior volume de consultas realizadas. |
-| **2. Absenteísmo (Faltas)**  | Concentração e taxa de ausência de pacientes por convênio e especialidade.                |
-| **3. Desempenho Financeiro** | Análise de faturamento total, volume de atendimentos e ticket médio.                      |
-| **4. Ocupação de Espaços**   | Mapeamento dos consultórios mais utilizados e seus respectivos horários de pico.          |
-
-## 🛠️ Tecnologias Utilizadas
-
-- **Linguagem Principal:** Java 21
-- **Gerenciador de Dependências:** Maven (opcional para execução)
-- **Banco de Dados:** PostgreSQL
-- **Driver de Conexão:** JDBC
-
-## 🚀 Como Executar o Projeto
-
-A aplicação já acompanha todas as dependências necessárias e um script de inicialização rápida automatizado para o Windows.
-
-### Execução Rápida (Recomendado)
-
-1. Navegue até o diretório do projeto: `java/uc6-jdbc-base/`.
-2. Dê um duplo clique no arquivo executável **`executar-interface.bat`**.
-3. O painel hospitalar será iniciado instantaneamente no terminal, realizando a conexão segura com o banco de dados.
-
-### Execução Manual via Terminal (Alternativa)
-
-Se preferir rodar manualmente pelo Git Bash ou Prompt de Comando, certifique-se de estar dentro da pasta `java/uc6-jdbc-base` e execute:
-
-```bash
-java -jar target/relatorios-clinica.jar
-```
+Módulo desenvolvido para transformar dados operacionais de uma clínica fictícia em indicadores e relatórios analíticos de apoio à tomada de decisão. A aplicação em Java conecta-se ao banco de dados PostgreSQL via JDBC e disponibiliza modo terminal interativo e interface gráfica executiva.
 
 ---
 
-## 🗄️ Estrutura do Banco de Dados e Scripts SQL
+## 📊 Relatórios Analíticos Disponíveis
 
-Para fins de auditoria, consultas manuais ou geração de relatórios diretos no cliente de banco de dados (como DBeaver), os arquivos fonte estão localizados na pasta `sql/`.
+|  Nº   | Relatório                 | Pergunta / Decisão de Negócio Atendida                                               |
+| :---: | :------------------------ | :----------------------------------------------------------------------------------- |
+| **1** | **Demanda Operacional**   | Quais especialidades e médicos possuem maior volume de atendimentos realizados?      |
+| **2** | **Absenteísmo (Faltas)**  | Qual o índice e a taxa de ausência de pacientes por convênio e por especialidade?    |
+| **3** | **Desempenho Financeiro** | Qual o faturamento total apurado e o ticket médio das consultas concluídas?          |
+| **4** | **Ocupação de Espaços**   | Quais consultórios físicos são mais demandados e quais as faixas de horário de pico? |
 
-### Regras de Negócio Implementadas
+---
 
-- **Consultas Efetivadas:** Filtradas estritamente através do estado `status = 'REALIZADA'`.
-- **Ausências e Absenteísmo:** Identificadas e calculadas pelo estado `status = 'FALTOU'`.
-- **Cálculo de Produtividade:** Métricas de tempo e duração de atendimento desconsideram registros onde os campos de marcação temporal (`inicio_atendimento` e `fim_atendimento`) são nulos.
-- **Faturamento Real:** Consultas canceladas ou faltas não contabilizam valores financeiros (`valor_cobrado IS NULL`).
+## ⚙️ Pré-requisitos
+
+1. **Java JDK 17 ou superior** instalado no computador.
+2. **PostgreSQL** ativo com a base da clínica carregada.
+3. Se necessário, confira o usuário e a senha do seu banco de dados local no arquivo:  
+   `clinica_pi_uc6/java/uc6-jdbc-base/src/main/java/br/senac/uc6/ConfigBanco.java`.
+
+---
+
+## 🚀 Como Executar o Projeto
+
+Você tem duas maneiras práticas de rodar a aplicação:
+
+---
+
+### Opção 1: Pelo Terminal do VS Code (Direto da Raiz — Sem `cd`)
+
+Ao abrir a pasta `study-clinica-senac` no VS Code, abra o terminal integrado (`Ctrl + '` ou menu **Terminal > New Terminal**) e execute os comandos abaixo diretamente:
+
+#### 1. Compilar o projeto:
+
+```bash
+mkdir -p clinica_pi_uc6/java/uc6-jdbc-base/target/classes
+javac -cp "clinica_pi_uc6/java/uc6-jdbc-base/lib/postgresql-42.7.11.jar" -d clinica_pi_uc6/java/uc6-jdbc-base/target/classes clinica_pi_uc6/java/uc6-jdbc-base/src/main/java/br/senac/uc6/*.java
+```
+
+#### 2. Executar a aplicação:
+
+- **Modo Terminal Interativo (Menu com opções 0 a 5):**
+
+  ```bash
+  java -cp "clinica_pi_uc6/java/uc6-jdbc-base/target/classes;clinica_pi_uc6/java/uc6-jdbc-base/lib/postgresql-42.7.11.jar" br.senac.uc6.Main
+  ```
+
+- **Modo Interface Gráfica Dark (Painel Executivo Swing):**
+  ```bash
+  java -cp "clinica_pi_uc6/java/uc6-jdbc-base/target/classes;clinica_pi_uc6/java/uc6-jdbc-base/lib/postgresql-42.7.11.jar" br.senac.uc6.Main --gui
+  ```
+
+---
+
+### Opção 2: Execução Rápida via `.bat` (Windows Explorer)
+
+Se preferir não usar o terminal para abrir o painel gráfico:
+
+1. No explorador de arquivos do Windows, navegue até a pasta:
+   ```text
+   clinica_pi_uc6\java\uc6-jdbc-base\
+   ```
+2. Dê um duplo clique no arquivo **`executar-interface.bat`**.
+   > _O script compila os arquivos automaticamente (caso ainda não estejam compilados) e abre a tela da clínica diretamente._
+
+---
+
+## 🗄️ Estrutura das Consultas SQL e Documentação
+
+- **Scripts SQL Analíticos:** pasta `clinica_pi_uc6/sql/` (prontos para execução no DBeaver).
+- **Dicionário de Dados e Regras de Negócio:** pasta `clinica_pi_uc6/documentacao/`.
+
+### Regras de Negócio Aplicadas nas Consultas:
+
+- **Consultas Realizadas:** Filtradas estritamente por `status = 'REALIZADA'`.
+- **Faltas / Absenteísmo:** Identificadas por `status = 'FALTOU'`.
+- **Faturamento e Ticket Médio:** Calculados somente com base em atendimentos realizados com valor válido, ignorando nulos gerados por faltas e cancelamentos.
+- **Turnos de Atendimento:** Manhã (07h às 11h), Tarde (12h às 17h) e Noite (18h às 22h).
